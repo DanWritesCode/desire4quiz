@@ -1,7 +1,7 @@
 <template>
   <div>
     <quiz-header v-if="showQuizHeader"></quiz-header>
-    <quiz-frame></quiz-frame>
+    <quiz-frame :quiz-id="1"></quiz-frame> <!-- hardcoded value "1" for testing purposes -->
   </div>
 </template>
 

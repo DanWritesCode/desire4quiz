@@ -18,7 +18,12 @@ class Question {
 
   public function export($exportAnswers = true) {
       if($exportAnswers && $this->answers != null && sizeof($this->answers) > 0) {
-        return [];
+        $r = ["id" => $this->getId(), "question" => $this->getQuestion(), "marks" => $this->getMarks()];
+        $as = [];
+        foreach($this->getAnswers() as $a)
+          $as[] = $a->export(false);
+        $r["answers"] = $as;
+        return $r;
       }
       return ["id" => $this->getId(), "question" => $this->getQuestion(), "marks" => $this->getMarks()];
   }
@@ -58,6 +63,11 @@ class Question {
       $questions[] = new Question($id, $data);
     }
     $stmt->close();
+
+    // Get answers
+    foreach($questions as $question)
+      $question->setAnswers(Answer::getAnswersForQuiz($conn, $question->getId()));
+
     return $questions;
   }
 

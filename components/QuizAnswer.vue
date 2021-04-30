@@ -2,7 +2,7 @@
   <div :class="{ 'is-active': isToggled }" class="form-check answer-box mb-2" @click="handleClick">
     <label class="radio">
       <span class="radio__input">
-        <input type="radio" :name="questionId" />
+        <input type="radio" :name="questionId + '-' + answerId" :checked="isToggled" />
         <span class="radio__control"></span>
       </span>
       <span class="radio__label">{{text}}</span>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "QuizAnswer",
-  props: ['text', 'questionId'],
+  props: ['text', 'questionId', 'answerId'],
   data() {
     return {
       isToggled: false,
@@ -23,13 +23,13 @@ export default {
     handleClick() {
       window.$nuxt.$emit('questionSelected', {
         questionId: this.questionId,
-        questionText: this.text,
+        answerId: this.answerId,
       });
     }
   },
   mounted() {
     window.$nuxt.$on('questionSelected', (e) => {
-      if (e.questionId === this.questionId && e.questionText === this.text) {
+      if (e.questionId === this.questionId && e.answerId === this.answerId) {
         this.isToggled = true;
       } else if(e.questionId === this.questionId) {
         this.isToggled = false;

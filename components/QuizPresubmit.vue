@@ -16,12 +16,19 @@
 </template>
 
 <script>
+import {API_URL} from "@/config";
+
 export default {
   name: "QuizPresubmit",
+  props: ['quizId', 'selectedQuestions'],
   methods: {
     submitQuiz() {
-      window.$nuxt.$emit('submitQuiz', {
-      });
+      this.$axios.$put(`${API_URL}/quiz/${this.quizId}`, this.selectedQuestions)
+          .then((res) => {
+            window.$nuxt.$emit('submitQuiz', {});
+          }).catch((e) => {
+        this.$swal({title: 'Error!', text: 'Unable to connect to the Quiz server! Please reload the page.', icon: 'error'});
+      })
     },
     abortSubmission() {
       window.$nuxt.$emit('abortSubmission');

@@ -14,7 +14,7 @@
         <div v-for="question in questions" class="mb-5">
           <h5><b>Question {{question.id}}</b> ({{question.marks}} point)</h5>
           <p>{{ question.question }}</p>
-          <quiz-answer v-for="answer in question.answers" :text="answer.answerText" :question-id="question.id"></quiz-answer>
+          <quiz-answer v-for="answer in question.answers" :text="answer.answerText" :question-id="question.id" :answer-id="answer.id"></quiz-answer>
         </div>
         <br/>
         <hr style="background-color: #303133; height: 1px;"/>
@@ -23,8 +23,8 @@
           <span class="small">{{counter}} of {{questions.length}} questions saved</span>
         </div>
       </div>
-      <quiz-presubmit v-if="quizPresubmit && !quizSubmit"></quiz-presubmit>
-      <quiz-submit v-if="quizSubmit" quiz-name="My Custom Quiz"></quiz-submit>
+      <quiz-presubmit v-if="quizPresubmit && !quizSubmit" :quiz-id="quizId" :selected-questions="selectedQuestions"></quiz-presubmit>
+      <quiz-submit v-if="quizSubmit" :start-time="startTime" quiz-name="My Custom Quiz"></quiz-submit>
     </div>
   </div>
 </template>
@@ -43,10 +43,11 @@ export default {
   data() {
     return {
       questions: [],
-      selectedQuestions: [],
+      selectedQuestions: {},
       counter: 0,
       quizPresubmit: false,
       quizSubmit: false,
+      startTime: new Date(),
     }
   },
   methods: {
@@ -56,20 +57,23 @@ export default {
   },
   async mounted() {
     window.$nuxt.$on('questionSelected', (e) => {
-      if(!this.selectedQuestions.includes(e.questionId)) {
-        this.selectedQuestions.push(e.questionId);
+      if(!this.selectedQuestions[e.questionId])
         this.counter++;
-      }
+
+      this.selectedQuestions[e.questionId] = e.answerId;
     })
     window.$nuxt.$on('abortSubmission', (e) => {
       this.quizPresubmit = false;
     })
     window.$nuxt.$on('submitQuiz', (e) => {
+      this.quizPresubmit = false;
       this.quizSubmit = true;
     })
     await this.$axios.$post(`${API_URL}/quiz/${this.quizId}`, "")
         .then((res) => {
           this.questions = res.questions;
+        }).catch((e) => {
+          this.$swal({title: 'Error!', text: 'Unable to connect to the Quiz server! Please reload the page.', icon: 'error'});
         })
   },
 

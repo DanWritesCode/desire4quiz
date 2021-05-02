@@ -5,6 +5,8 @@ class Quiz {
   private $id = null;
   private $title = null;
   private $questions = null;
+  private $description = null;
+  private $timeAllowed = null;
 
   public function __construct($id, $data = array()) {
     $this->id = $id;
@@ -12,7 +14,7 @@ class Quiz {
 
   public function export($exportQuestions = true) {
     if($exportQuestions && $this->questions != null && sizeof($this->questions) > 0) {
-      $r = ["id" => $this->getId(), "title" => $this->getTitle()];
+      $r = ["id" => $this->getId(), "title" => $this->getTitle(), "description" => $this->getDescription(), "timeAllowed" => $this->getTimeAllowed()];
       $qs = [];
       foreach($this->getQuestions() as $q)
         $qs[] = $q->export();
@@ -20,14 +22,14 @@ class Quiz {
       return $r;
     }
 
-    return ["id" => $this->getId(), "title" => $this->getTitle()];
+    return ["id" => $this->getId(), "title" => $this->getTitle(), "description" => $this->getDescription(), "timeAllowed" => $this->getTimeAllowed()];
   }
 
   public function load($conn, $loadQuestions = false) {
-    $stmt = $conn->prepare("SELECT title FROM quizzes WHERE id = ?;");
+    $stmt = $conn->prepare("SELECT `title`, `description`, `timeAllowedMins` FROM quizzes WHERE id = ?;");
     $stmt->bind_param("i", $this->id);
     $stmt->execute();
-    $stmt->bind_result($this->title);
+    $stmt->bind_result($this->title, $this->description, $this->timeAllowed);
     $r = $stmt->fetch();
     if(!$r)
       return false;
@@ -81,5 +83,17 @@ class Quiz {
     $this->questions = $questions;
   }
 
+ /**
+   * @return null
+   */
+  public function getDescription() {
+    return $this->description;
+  }
 
+  /**
+   * @return null
+   */
+   public function getTimeAllowed() {
+     return $this->timeAllowed;
+   }
 }

@@ -27,7 +27,7 @@ if($request["type"] == "GET") {
     $q = new Quiz($quizId);
     $r = $q->load($conn);
     if(!$r)
-      renderError("Quiz not found");
+      renderError("Quiz not found", 404);
 
     die(json_encode($q->export(false)));
 
@@ -35,7 +35,7 @@ if($request["type"] == "GET") {
   $q = new Quiz($quizId);
   $r = $q->load($conn, true);
   if(!$r)
-    renderError("Quiz not found");
+    renderError("Quiz not found", 404);
 
   die(json_encode($q->export(true)));
 }

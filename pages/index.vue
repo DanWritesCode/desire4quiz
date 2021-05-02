@@ -1,14 +1,13 @@
 <template>
-  <div>
-    <home-page></home-page>
+  <div class="text-center mt-4">
+    <h1>Welcome to Desire4Quiz</h1>
+    <h5>You'll need a quiz link to access any quizzes on this site.</h5>
   </div>
 </template>
 
 <script>
-import HomePage from '../components/HomePage'
 export default {
   name: 'Home',
-  components: { HomePage },
   transition: 'fade',
   head() {
     return {
@@ -17,14 +16,3 @@ export default {
   },
 }
 </script>
-<style>
-body {
-  background-color: #191919;
-  font-family: 'Lato', sans-serif;
-  color: #bcbfc0;
-  font-size: 19px;
-  letter-spacing: .01rem;
-  font-weight: 400;
-  line-height: 1.4rem;
-}
-</style>

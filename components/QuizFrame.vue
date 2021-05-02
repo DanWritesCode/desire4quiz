@@ -5,7 +5,7 @@
         <p><b>Page 1:</b></p>
         <div class="container">
           <div class="row">
-            <quiz-nav v-for="question in questions" :num="question.id"></quiz-nav>
+            <quiz-nav v-for="question in questions" v-bind:key="question.id" :num="question.id"></quiz-nav>
           </div>
         </div>
       </div>
@@ -14,7 +14,7 @@
         <div v-for="question in questions" class="mb-5">
           <h5><b>Question {{question.id}}</b> ({{question.marks}} point)</h5>
           <p>{{ question.question }}</p>
-          <quiz-answer v-for="answer in question.answers" :text="answer.answerText" :question-id="question.id" :answer-id="answer.id"></quiz-answer>
+          <quiz-answer v-for="answer in question.answers" v-bind:key="answer.id" :text="answer.answerText" :question-id="question.id" :answer-id="answer.id"></quiz-answer>
         </div>
         <br/>
         <hr style="background-color: #303133; height: 1px;"/>

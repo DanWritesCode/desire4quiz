@@ -24,6 +24,16 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #191919;
+  font-family: 'Lato', sans-serif;
+  color: #bcbfc0;
+  font-size: 19px;
+  letter-spacing: .01rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+}
+
 *,
 *::before,
 *::after {

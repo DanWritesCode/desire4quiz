@@ -1,8 +1,8 @@
 <template>
   <div>
     <quiz-description v-if="Object.keys(quizInfo).length > 0 && !quizBegun" :title="quizInfo.title" :description="quizInfo.description" :time-allowed="quizInfo.timeAllowed"></quiz-description>
-    <quiz-header v-if="showQuizHeader && quizBegun"></quiz-header>
-    <quiz-frame v-if="quizBegun" :quiz-id="quizId"></quiz-frame> <!-- hardcoded value "1" for testing purposes -->
+    <quiz-header v-if="showQuizHeader && quizBegun" :title="quizInfo.title"></quiz-header>
+    <quiz-frame v-if="quizBegun" :quiz-id="quizId" :title="quizInfo.title"></quiz-frame> <!-- hardcoded value "1" for testing purposes -->
   </div>
 </template>
 

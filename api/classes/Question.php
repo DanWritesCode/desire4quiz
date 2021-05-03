@@ -7,6 +7,7 @@ class Question {
   private $question = null;
   private $marks = null;
   private $answers = null;
+  private $response = null;
 
   public function __construct($id, $data = array()) {
     $this->id = $id;
@@ -139,6 +140,20 @@ class Question {
    */
   public function setAnswers($answers) {
     $this->answers = $answers;
+  }
+
+  /**
+   * @return null
+   */
+  public function getResponse() {
+    return $this->response;
+  }
+
+  /**
+   * @param null $response
+   */
+  public function setResponse($response): void {
+    $this->response = $response;
   }
 
 }

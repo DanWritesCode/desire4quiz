@@ -6,7 +6,6 @@ class Answer {
   private $answerText = null;
   private $correctAnswer = null;
 
-
   public function __construct($id, $data = array()) {
     $this->id = $id;
     foreach($data as $key => $value) {
@@ -88,6 +87,20 @@ class Answer {
    */
   public function setAnswerText($answer) {
     $this->answerText = $answer;
+  }
+
+  /**
+   * @return null
+   */
+  public function getCorrectAnswer() {
+    return $this->correctAnswer;
+  }
+
+  /**
+   * @param null $correctAnswer
+   */
+  public function setCorrectAnswer($correctAnswer): void {
+    $this->correctAnswer = $correctAnswer;
   }
 
   public static function getAnswersForQuiz($conn, $questionId) {

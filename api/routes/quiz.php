@@ -1,8 +1,8 @@
 <?php
 // Some PHP debug lines here
-/*ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+error_reporting(E_ALL);
 
 /*
     GET /quiz/id - Gets the quiz information by ID (name, description, etc)
@@ -23,19 +23,48 @@ require_once("classes/Quiz.php");
 $quizId = $request["sliced"][2];
 validate([$quizId => "int"]);
 
-if($request["type"] == "GET") {
-    $q = new Quiz($quizId);
-    $r = $q->load($conn);
-    if(!$r)
-      renderError("Quiz not found", 404);
+// Load Quiz
+$q = new Quiz($quizId);
+$r = $q->load($conn, true);
+if(!$r)
+  renderError("Quiz not found", 404);
 
-    die(json_encode($q->export(false)));
+if($request["type"] == "GET") {
+  die(json_encode($q->export(false)));
 
 } else if($request["type"] == "POST") {
-  $q = new Quiz($quizId);
-  $r = $q->load($conn, true);
-  if(!$r)
-    renderError("Quiz not found", 404);
-
   die(json_encode($q->export(true)));
+
+} else if($request["type"] == "PUT") {
+  // Process answers, grade
+  $response = $q->export(false);
+  unset($response["description"]);
+  unset($response["timeAllowed"]);
+  $response["autoGrade"] = boolval($q->isAutoGrade());
+
+  if(!empty($request["input"]) && sizeof($request["input"]) > 0) {
+    $qs = $q->getQuestions();
+    foreach($request["input"] as $key=>$val) {
+      foreach($qs as $myQ) {
+        if($myQ->getId() == $key) {
+          $myQ->setResponse($val);
+          // TODO put answer in sql
+          break;
+        }
+      }
+    }
+
+    if($q->isAutoGrade()) {
+      $marks = $q->grade();
+
+      $response["grade"] = [];
+      $response["grade"]["totalMarks"] = $q->getTotalMarks();
+      $response["grade"]["marks"] = $marks;
+      $response["grade"]["percentage"] = $marks/$q->getTotalMarks();
+    }
+    die(json_encode($response));
+  } else {
+    renderError("Cannot PUT answers - no valid answers provided!");
+  }
+
 }

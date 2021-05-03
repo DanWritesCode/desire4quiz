@@ -7,17 +7,18 @@ class Quiz {
   private $questions = null;
   private $description = null;
   private $timeAllowed = null;
+  private $autoGrade = false;
+  private $totalMarks = 0;
 
   public function __construct($id, $data = array()) {
     $this->id = $id;
   }
 
   public function export($exportQuestions = true) {
-    if($exportQuestions && $this->questions != null && sizeof($this->questions) > 0) {
+    if ($exportQuestions && $this->questions != null && sizeof($this->questions) > 0) {
       $r = ["id" => $this->getId(), "title" => $this->getTitle(), "description" => $this->getDescription(), "timeAllowed" => $this->getTimeAllowed()];
       $qs = [];
-      foreach($this->getQuestions() as $q)
-        $qs[] = $q->export();
+      foreach ($this->getQuestions() as $q) $qs[] = $q->export();
       $r["questions"] = $qs;
       return $r;
     }
@@ -26,17 +27,22 @@ class Quiz {
   }
 
   public function load($conn, $loadQuestions = false) {
-    $stmt = $conn->prepare("SELECT `title`, `description`, `timeAllowedMins` FROM quizzes WHERE id = ?;");
+    $stmt = $conn->prepare("SELECT `title`, `description`, `timeAllowedMins`, `autoGrade` FROM quizzes WHERE id = ?;");
     $stmt->bind_param("i", $this->id);
     $stmt->execute();
-    $stmt->bind_result($this->title, $this->description, $this->timeAllowed);
+    $stmt->bind_result($this->title, $this->description, $this->timeAllowed, $this->autoGrade);
     $r = $stmt->fetch();
-    if(!$r)
-      return false;
+    if (!$r) return false;
     $stmt->close();
 
-    if($loadQuestions)
+    if ($loadQuestions) {
       $this->questions = Question::getQuestionsForQuiz($conn, $this->id);
+      $totalMarks = 0;
+      foreach ($this->getQuestions() as $question) {
+        $totalMarks += $question->getMarks();
+      }
+      $this->setTotalMarks($totalMarks);
+    }
 
     return true;
   }
@@ -83,7 +89,7 @@ class Quiz {
     $this->questions = $questions;
   }
 
- /**
+  /**
    * @return null
    */
   public function getDescription() {
@@ -93,7 +99,60 @@ class Quiz {
   /**
    * @return null
    */
-   public function getTimeAllowed() {
-     return $this->timeAllowed;
-   }
+  public function getTimeAllowed() {
+    return $this->timeAllowed;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isAutoGrade() {
+    return $this->autoGrade;
+  }
+
+  /**
+   * @param bool $autoGrade
+   */
+  public function setAutoGrade($autoGrade) {
+    $this->autoGrade = $autoGrade;
+  }
+
+  /**
+   * @return int
+   */
+  public function getTotalMarks(): int {
+    return $this->totalMarks;
+  }
+
+  /**
+   * @param int $totalMarks
+   */
+  public function setTotalMarks(int $totalMarks) {
+    $this->totalMarks = $totalMarks;
+  }
+
+  public function grade() {
+    $totalMarks = 0;
+
+    foreach ($this->getQuestions() as $question) {
+      foreach ($question->getAnswers() as $answer) {
+        if ($answer->getAnswerType() == "MC") {
+          // Multiple-choice type answers (also used for True/False type answers)
+          if ($answer->getCorrectAnswer() == 1 && $answer->getId() == $question->getResponse()) {
+            $totalMarks += $question->getMarks();
+            break;
+          }
+        } else if ($answer->getAnswerType() == "EQ") {
+          // Textbox type answers, where the answer is done by direct comparison
+          if (strtolower($answer->getCorrectAnswer()) == strtolower($question->getResponse())) {
+            $totalMarks += $question->getMarks();
+            break;
+          }
+        }
+      }
+    }
+
+    return $totalMarks;
+  }
+
 }

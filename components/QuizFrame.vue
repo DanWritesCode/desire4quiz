@@ -5,14 +5,14 @@
         <p><b>Page 1:</b></p>
         <div class="container">
           <div class="row">
-            <quiz-nav v-for="question in questions" v-bind:key="question.id" :num="question.id"></quiz-nav>
+            <quiz-nav v-for="(question, index) in questions" v-bind:key="question.id" :num="question.id" :display-num="index+1"></quiz-nav>
           </div>
         </div>
       </div>
 
       <div class="col-md-8 ml-5 d-inline" v-if="!quizPresubmit && !quizSubmit">
-        <div v-for="question in questions" class="mb-5">
-          <h5><b>Question {{question.id}}</b> ({{question.marks}} point)</h5>
+        <div v-for="(question, index) in questions" class="mb-5">
+          <h5><b>Question {{index+1}}</b> ({{question.marks}} point)</h5>
           <p>{{ question.question }}</p>
           <quiz-answer v-for="answer in question.answers" v-bind:key="answer.id" :text="answer.answerText" :question-id="question.id" :answer-id="answer.id"></quiz-answer>
         </div>

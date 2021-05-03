@@ -1,6 +1,6 @@
 <template>
   <div class="mb-1 quizNav mb-3 mr-2">
-    <p class="number"><a @click="doSomething">{{num}}</a></p>
+    <p class="number"><a @click="doSomething">{{displayNum}}</a></p>
     <p class="dots" v-if="!isAnswered">--</p>
     <b-icon-check class="h2 chck" v-if="isAnswered"></b-icon-check>
 
@@ -12,7 +12,7 @@ import { BIconCheck } from 'bootstrap-vue'
 
 export default {
   name: "QuizNav",
-  props: ['num'],
+  props: ['num', 'displayNum'],
   components: {BIconCheck},
   data() {
     return {

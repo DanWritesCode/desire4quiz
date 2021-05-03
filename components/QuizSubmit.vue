@@ -8,8 +8,8 @@
     </div>
     <div v-if="autoGrade" style="border-top: #394047 1px solid;">
       <div class="text-right mt-2 mt-3">
-        <p class="mb-2"><b>Attempt Score: </b>{{gradeAchievedMarks}} / {{gradeTotalMarks}} - {{gradePercentage * 100}} %</p>
-        <p><b>Overall Grade </b>(highest attempt): {{gradeAchievedMarks}} / {{gradeTotalMarks}} - {{gradePercentage * 100}} %</p>
+        <p class="mb-2"><b>Attempt Score: </b>{{gradeAchievedMarks}} / {{gradeTotalMarks}} - {{ (gradePercentage * 100).toFixed(2)}} %</p>
+        <p><b>Overall Grade </b>(highest attempt): {{gradeAchievedMarks}} / {{gradeTotalMarks}} - {{ (gradePercentage * 100).toFixed(2)}} %</p>
       </div>
     </div>
     <router-link to="/" type="button" class="d2l-button">Done</router-link>

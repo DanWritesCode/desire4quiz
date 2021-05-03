@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-12 d-inline">
     <div class="mb-5">
-      <h2 class="mb-3">Quiz Submissions - {{quizName}}</h2>
+      <h2 class="mb-3">Quiz Submissions - {{title}}</h2>
       <p class="mb-4"><b>My Name</b></p>
       <p class="mb-3"><b>Attempt 1</b></p>
       <p>Written: {{formatDate(startTime)}} {{formatAMPM(startTime)}} - {{formatDate(endTime)}} {{formatAMPM(endTime)}}</p>
@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "QuizSubmit",
-  props: ['quizName', 'startTime', 'submissionResponse'],
+  props: ['title', 'startTime', 'submissionResponse'],
   data() {
     return {
       endTime: new Date(),

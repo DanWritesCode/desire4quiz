@@ -24,7 +24,7 @@
         </div>
       </div>
       <quiz-presubmit v-if="quizPresubmit && !quizSubmit" :quiz-id="quizId" :selected-questions="selectedQuestions"></quiz-presubmit>
-      <quiz-submit v-if="quizSubmit" :start-time="startTime" quiz-name="My Custom Quiz" :submission-response="quizSubmissionResponse"></quiz-submit>
+      <quiz-submit v-if="quizSubmit" :start-time="startTime" :title="title" :submission-response="quizSubmissionResponse"></quiz-submit>
     </div>
   </div>
 </template>
@@ -39,7 +39,7 @@ import { API_URL } from '@/config.js'
 export default {
   name: "QuizHeader",
   components: {QuizSubmit, QuizPresubmit, QuizNav, QuizAnswer},
-  props: ['quizId'],
+  props: ['quizId', 'title'],
   data() {
     return {
       questions: [],

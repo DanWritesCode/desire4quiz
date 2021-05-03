@@ -13,17 +13,15 @@
       You can submit your quiz responses at any time.
       Click "Start Quiz" to begin attempt.</p>
     <div class="mt-4">
-      <button type="button" class="d2l-button" @click="startQuiz">Submit Quiz</button>
+      <button type="button" class="d2l-button" @click="startQuiz">Start Quiz</button>
     </div>
   </div>
 </template>
 
 <script>
-import D4QButton from "~/components/D4QButton";
 export default {
   name: "QuizDescription",
   props: ['title', 'description', 'timeAllowed'],
-  components: {D4QButton},
   methods: {
     formatAMPM(date) {
       let hours = date.getHours();

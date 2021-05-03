@@ -1,6 +1,6 @@
 <template>
   <div class="mainHeader container mt-3 pb-3">
-    <h1>Quiz: My Custom Quiz</h1>
+    <h1>Quiz: {{title}}</h1>
     <div class="headerBar">
       <span>Est. Length: 2:00:00</span>
       <span class="ml-5">My Name: Attempt 1</span>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "QuizHeader",
-  props: [],
+  props: ['title'],
 }
 </script>
 

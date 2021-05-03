@@ -6,7 +6,12 @@
       <p class="mb-3"><b>Attempt 1</b></p>
       <p>Written: {{formatDate(startTime)}} {{formatAMPM(startTime)}} - {{formatDate(endTime)}} {{formatAMPM(endTime)}}</p>
     </div>
-
+    <div v-if="autoGrade" style="border-top: #394047 1px solid;">
+      <div class="text-right mt-2 mt-3">
+        <p class="mb-2"><b>Attempt Score: </b>{{gradeAchievedMarks}} / {{gradeTotalMarks}} - {{gradePercentage * 100}} %</p>
+        <p><b>Overall Grade </b>(highest attempt): {{gradeAchievedMarks}} / {{gradeTotalMarks}} - {{gradePercentage * 100}} %</p>
+      </div>
+    </div>
     <router-link to="/" type="button" class="d2l-button">Done</router-link>
   </div>
 </template>
@@ -14,10 +19,24 @@
 <script>
 export default {
   name: "QuizSubmit",
-  props: ['quizName', 'startTime'],
+  props: ['quizName', 'startTime', 'submissionResponse'],
   data() {
     return {
       endTime: new Date(),
+      autoGrade: false,
+      gradeTotalMarks: 0,
+      gradeAchievedMarks: 0,
+      gradePercentage: 0,
+    }
+  },
+  mounted() {
+    if(Object.keys(this.submissionResponse).length > 0) {
+      if(this.submissionResponse.autoGrade) {
+        this.autoGrade = true;
+        this.gradeTotalMarks = this.submissionResponse.grade.totalMarks;
+        this.gradeAchievedMarks = this.submissionResponse.grade.marks;
+        this.gradePercentage = this.submissionResponse.grade.percentage;
+      }
     }
   },
   methods: {
@@ -42,7 +61,7 @@ export default {
     formatDate(date) {
       return date.toDateString().replace(date.toDateString().split(" ")[0], "")
       .replace(" " + date.getFullYear(), ", " + date.getFullYear());
-    }
+    },
   }
 }
 

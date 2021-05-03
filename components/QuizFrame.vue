@@ -24,7 +24,7 @@
         </div>
       </div>
       <quiz-presubmit v-if="quizPresubmit && !quizSubmit" :quiz-id="quizId" :selected-questions="selectedQuestions"></quiz-presubmit>
-      <quiz-submit v-if="quizSubmit" :start-time="startTime" quiz-name="My Custom Quiz"></quiz-submit>
+      <quiz-submit v-if="quizSubmit" :start-time="startTime" quiz-name="My Custom Quiz" :submission-response="quizSubmissionResponse"></quiz-submit>
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
       quizPresubmit: false,
       quizSubmit: false,
       startTime: new Date(),
+      quizSubmissionResponse: {},
     }
   },
   methods: {
@@ -66,6 +67,7 @@ export default {
       this.quizPresubmit = false;
     })
     window.$nuxt.$on('submitQuiz', (e) => {
+      this.quizSubmissionResponse = e.response;
       this.quizPresubmit = false;
       this.quizSubmit = true;
     })

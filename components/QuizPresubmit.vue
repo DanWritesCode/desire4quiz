@@ -25,7 +25,7 @@ export default {
     submitQuiz() {
       this.$axios.$put(`${API_URL}/quiz/${this.quizId}`, this.selectedQuestions)
           .then((res) => {
-            window.$nuxt.$emit('submitQuiz', {});
+            window.$nuxt.$emit('submitQuiz', {response: res});
           }).catch((e) => {
         this.$swal({title: 'Error!', text: 'Unable to connect to the Quiz server! Please reload the page.', icon: 'error'});
       })

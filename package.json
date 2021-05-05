@@ -17,5 +17,7 @@
     "nuxt": "^2.15.3",
     "vue-sweetalert2": "^4.3.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@nuxt/types": "^2.15.4"
+  }
 }

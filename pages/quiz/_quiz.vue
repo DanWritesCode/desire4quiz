@@ -33,7 +33,6 @@ export default {
     if(this.quizId > 0) {
       this.$axios.$get(`${API_URL}/quiz/${this.quizId}`)
           .then((res) => {
-            console.log(res);
             this.quizInfo = res;
           }).catch((e) => {
             if(e.response && e.response.status === 404)
@@ -44,11 +43,11 @@ export default {
     } else {
       this.$swal({title: 'Invalid quiz!', text: 'You have entered a quiz ID that cannot be processed!', icon: 'error', showConfirmButton: false, showCancelButton: false, buttons: false});
     }
-    window.$nuxt.$on('startQuiz', (e) => {
+    window.$nuxt.$on('startQuiz', () => {
       this.showQuizHeader = true;
       this.quizBegun = true;
     })
-    window.$nuxt.$on('submitQuiz', (e) => {
+    window.$nuxt.$on('submitQuiz', () => {
       this.showQuizHeader = false;
     })
   }

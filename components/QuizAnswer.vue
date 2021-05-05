@@ -56,9 +56,6 @@ export default {
   width: 0;
   height: 0;
 }
-.radio__input input:checked ~ .radio__control {
-  /*background: radial-gradient(currentcolor 50%, rgba(255, 0, 0, 0) 51%);*/
-}
 .is-active {
   background-color: #1a242c !important;
 }
@@ -72,9 +69,7 @@ input:checked ~ .radio__control::before {
   transform: scale(1);
   color: #bdbec5;
 }
-input:focus ~ .radio__control {
-  /*box-shadow: 0 0 0 0.05em #fff, 0 0 0.15em 0.1em currentColor;*/
-}
+
 .radio__control {
   display: grid;
   place-items: center;
@@ -96,35 +91,5 @@ input:focus ~ .radio__control {
 .answer-box:hover {
   background-color: #2f2f2f;
 
-}
-
-.d2l-radio {
-  appearance: none;
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-size: .5rem .5rem;
-  background-color: #1a1b1f;
-  border-color: #757a7d;
-  border-radius: 56%;
-  border-style: solid;
-  border-width: 1px;
-  box-sizing: border-box;
-  display: inline-block;
-  height: 24px;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
-  width: 24px;
-
-}
-.d2l-radio:hover {
-  border-color: #006fbf;
-  border-width: 2px;
-}
-
-.d2l-text {
-  margin-left: 32px;
-  padding-bottom: 0;
-  margin-bottom: 0;
 }
 </style>

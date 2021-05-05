@@ -5,13 +5,13 @@
         <p><b>Page 1:</b></p>
         <div class="container">
           <div class="row">
-            <quiz-nav v-for="(question, index) in questions" v-bind:key="question.id" :num="question.id" :display-num="index+1"></quiz-nav>
+            <quiz-nav v-for="(question, index) in questions" v-bind:key="question.id" :question-id="question.id" :display-num="index+1"></quiz-nav>
           </div>
         </div>
       </div>
 
       <div class="col-md-8 ml-5 d-inline" v-if="!quizPresubmit && !quizSubmit">
-        <div v-for="(question, index) in questions" class="mb-5">
+        <div v-for="(question, index) in questions" class="mb-5" :ref="'q'+question.id">
           <h5><b>Question {{index+1}}</b> ({{question.marks}} point)</h5>
           <p>{{ question.question }}</p>
           <quiz-answer v-for="answer in question.answers" v-bind:key="answer.id" :text="answer.answerText" :question-id="question.id" :answer-id="answer.id"></quiz-answer>
@@ -63,8 +63,15 @@ export default {
 
       this.selectedQuestions[e.questionId] = e.answerId;
     })
-    window.$nuxt.$on('abortSubmission', (e) => {
+    window.$nuxt.$on('abortSubmission', () => {
       this.quizPresubmit = false;
+    })
+    window.$nuxt.$on('scrollToQuestion', (e) => {
+      if(this.$refs['q' + e.questionId]) {
+        const el = this.$refs['q' + e.questionId][0];
+        if (el)
+          el.scrollIntoView({behavior: 'smooth'});
+      }
     })
     window.$nuxt.$on('submitQuiz', (e) => {
       this.quizSubmissionResponse = e.response;
@@ -74,7 +81,7 @@ export default {
     await this.$axios.$post(`${API_URL}/quiz/${this.quizId}`, "")
         .then((res) => {
           this.questions = res.questions;
-        }).catch((e) => {
+        }).catch(() => {
           this.$swal({title: 'Error!', text: 'Unable to connect to the Quiz server! Please reload the page.', icon: 'error'});
         })
   },

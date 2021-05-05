@@ -4,15 +4,17 @@ a Single-page Application (SPA) written in Nuxt/Vue.js which gives it a huge per
 
 D4Q has two parts to it - the frontend and the backend/API. The API is written in PHP and uses a MySQL database 
 for data storage.
-----
+
+
 ![Quiz Description Page](https://ninja.photos/KkNSnPkxmE-0653131665.png "Quiz Description Page")
-----
+
+
 ![Quiz Frame](https://ninja.photos/OCpoizusHL-0545147718.png "Quiz Frame")
 
 
 # Features
 D4Q supports a number of essential quiz features, with more being planned for the future.
-#####Current features:
+#### Current features:
 - Support for unlimited quizzes, questions, and answers
 - Custom marks/weight per question
 - Multiple-choice questions
@@ -24,14 +26,15 @@ D4Q supports a number of essential quiz features, with more being planned for th
 - Answer list sorting*
 
 `*` = the specified feature may have parts of it implemented in the frontend or backend, but is not fully functional yet
-#####Upcoming features:
+
+#### Upcoming features:
 - Student name
 - Improved home page with sample quizzes
 - Text-based/typed answers
 - Question and answer randomization
 - Persistent answer saving and storage (browser-based)
 
-#####Potential features:
+#### Potential features:
 - Student authentication
 - Quiz creation studio
 - Graphical representation of student answers

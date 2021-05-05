@@ -1,8 +1,8 @@
 <template>
   <div class="mb-1 quizNav mb-3 mr-2">
-    <p class="number"><a @click="doSomething">{{displayNum}}</a></p>
+    <p class="number"><a @click="scrollToElement">{{displayNum}}</a></p>
     <p class="dots" v-if="!isAnswered">--</p>
-    <b-icon-check class="h2 chck" v-if="isAnswered"></b-icon-check>
+    <b-icon-check class="h2 checkbox" v-if="isAnswered"></b-icon-check>
 
   </div>
 </template>
@@ -12,7 +12,7 @@ import { BIconCheck } from 'bootstrap-vue'
 
 export default {
   name: "QuizNav",
-  props: ['num', 'displayNum'],
+  props: ['questionId', 'displayNum'],
   components: {BIconCheck},
   data() {
     return {
@@ -21,21 +21,23 @@ export default {
   },
   mounted() {
     window.$nuxt.$on('questionSelected', (e) => {
-      if (e.questionId === this.num) {
+      if (e.questionId === this.questionId) {
         this.isAnswered = true;
       }
     })
   },
   methods: {
-    doSomething() {
-
+    scrollToElement() {
+      window.$nuxt.$emit('scrollToQuestion', {
+        questionId: this.questionId,
+      });
     }
   }
 }
 </script>
 
 <style>
-.chck {
+.checkbox {
   margin-left: -6px;
   text-align: center;
 }
